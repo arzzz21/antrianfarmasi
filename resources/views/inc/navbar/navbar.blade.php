@@ -49,21 +49,21 @@
                     </a>
                 </li>
 
+                <li class="pc-item {{ request()->routeIs('loket.*') ? 'active' : '' }}">
+                    <a href="{{ route('loket.master') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ph-duotone ph-lockers"></i>
+                        </span>
+                        <span class="pc-mtext">Loket Antrian</span>
+                    </a>
+                </li>
+
                 <li class="pc-item {{ request()->routeIs('ambil.*') ? 'active' : '' }}">
                     <a href="{{ route('ambil.index') }}" class="pc-link">
                         <span class="pc-micon">
                             <i class="ph-duotone ph-ticket"></i>
                         </span>
                         <span class="pc-mtext">Ambil Antrian</span>
-                    </a>
-                </li>
-
-                <li class="pc-item {{ request()->routeIs('loket.*') ? 'active' : '' }}">
-                    <a href="{{ route('loket.master') }}" class="pc-link">
-                        <span class="pc-micon">
-                            <i class="ph-duotone ph-bell-ringing"></i>
-                        </span>
-                        <span class="pc-mtext">Loket Antrian</span>
                     </a>
                 </li>
 
