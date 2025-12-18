@@ -40,7 +40,53 @@
                     </a>
                 </li>
 
-                <li class="pc-item {{ request()->routeIs('antrian.ambil', 'antrian.store') ? 'active' : '' }}">
+                <li class="pc-item {{ request()->routeIs('jenis.*') ? 'active' : '' }}">
+                    <a href="{{ route('jenis.index') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ph-duotone ph-list-dashes"></i>
+                        </span>
+                        <span class="pc-mtext">Jenis Antrian</span>
+                    </a>
+                </li>
+
+                <li class="pc-item {{ request()->routeIs('ambil.*') ? 'active' : '' }}">
+                    <a href="{{ route('ambil.index') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ph-duotone ph-ticket"></i>
+                        </span>
+                        <span class="pc-mtext">Ambil Antrian</span>
+                    </a>
+                </li>
+
+                <li class="pc-item {{ request()->routeIs('loket.*') ? 'active' : '' }}">
+                    <a href="{{ route('loket.master') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ph-duotone ph-bell-ringing"></i>
+                        </span>
+                        <span class="pc-mtext">Loket Antrian</span>
+                    </a>
+                </li>
+
+                <li class="pc-item {{ request()->routeIs('panggil.*') ? 'active' : '' }}">
+                    <a href="{{ route('panggil.index') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ph-duotone ph-bell-ringing"></i>
+                        </span>
+                        <span class="pc-mtext">Pemanggilan Antrian</span>
+                    </a>
+                </li>
+
+                <li class="pc-item {{ request()->routeIs('display.*') ? 'active' : '' }}">
+                    <a href="{{ route('display.index') }}" class="pc-link">
+                        <span class="pc-micon">
+                            <i class="ph-duotone ph-monitor-play"></i>
+                        </span>
+                        <span class="pc-mtext">Display Antrian</span>
+                    </a>
+                </li>
+
+
+                {{-- <li class="pc-item {{ request()->routeIs('antrian.ambil', 'antrian.store') ? 'active' : '' }}">
                     <a href="{{ route('antrian.page.ambil.jenis') }}" class="pc-link">
                         <span class="pc-micon">
                             <i class="ph-duotone ph-ticket"></i>
@@ -64,7 +110,7 @@
                         </span>
                         <span class="pc-mtext" data-i18n="Display Antrian">Display Antrian</span>
                     </a>
-                </li>
+                </li> --}}
 
                 {{-- <li class="pc-item {{ request()->routeIs('videos.*') ? 'active' : '' }}">
                     <a href="{{ route('videos.index') }}" class="pc-link">
