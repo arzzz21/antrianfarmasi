@@ -2,6 +2,17 @@
 
 @section('content')
 <div class="container-fluid p-3">
+    <div id="display-gate" class="display-gate">
+        <div class="gate-card">
+            <h2 class="mb-3">Layar Antrian Farmasi</h2>
+            <p class="text-muted mb-4">
+                Klik untuk menampilkan informasi antrian
+            </p>
+            <button class="btn btn-dark btn-lg px-5" onclick="startDisplay()">
+                Tampilkan Layar
+            </button>
+        </div>
+    </div>
 
     <div class="container-fluid p-3 position-relative">
         <button class="btn btn-dark btn-sm position-absolute top-0 end-0 m-2"
@@ -65,11 +76,54 @@
     background: #f1f3f5;
     border-radius: 15px;
 }
+
+.display-gate {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #f5f7fb, #e9ecf3);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gate-card {
+    background: white;
+    padding: 40px 50px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,.15);
+    text-align: center;
+    max-width: 420px;
+}
+
 </style>
 
 <script>
+    let audioEnabled = false;
     let interval = null;
     let isCalling = false;
+
+    /* ================= StartDisplay ================= */
+    function startDisplay() {
+        const area = document.getElementById('display-area');
+
+        /* FULLSCREEN */
+        if (!document.fullscreenElement) {
+            area.requestFullscreen().catch(() => {});
+        }
+
+        /* AUDIO TRIGGER (silent) */
+        const unlock = new SpeechSynthesisUtterance(' ');
+        unlock.lang = 'id-ID';
+        unlock.volume = 0;
+        unlock.onend = () => {
+            audioEnabled = true;
+            document.getElementById('display-gate').remove();
+            startPolling();
+        };
+
+        speechSynthesis.speak(unlock);
+    }
 
     /* ================= FULLSCREEN ================= */
     function toggleFullscreen() {
@@ -148,6 +202,11 @@
 
     /* ================= AUDIO ================= */
     function playAudio(nomor, loket, callback) {
+        if (!audioEnabled) {
+            callback();
+            return;
+        }
+
         let msg = new SpeechSynthesisUtterance(
             'Nomor antrian ' + nomor + ', silakan ke ' + loket
         );
@@ -171,6 +230,6 @@
             }) + ' WIB';
     }, 1000);
 
-    startPolling();
+    // startPolling();
 </script>
 @endsection

@@ -31,7 +31,7 @@ Route::patch('/loket-master/{id}', [LoketMasterController::class, 'update'])->na
 
 //ANTRIAN
 Route::get('/ambil-antrian', [AntrianController::class, 'ambil'])->name('ambil.index');
-Route::post('/ambil-antrian', [AntrianController::class, 'store']);
+Route::post('/ambil-antrian/ajax', [AntrianController::class, 'ambilAjax'])->name('ambil.ajax');
 
 //PANGGILAN
 Route::get('/loket-antrian', [LoketController::class, 'index'])->name('panggil.index');

@@ -25,8 +25,12 @@ class AntrianCOntroller extends Controller
         return view('ambil.index', compact('jenis'));
     }
 
-    public function store(Request $request)
+    public function ambilAjax(Request $request)
     {
+        $request->validate([
+            'jenis_antrian_id' => 'required|exists:db_custom.simrspku_antrians.jenis_antrians,id'
+        ]);
+
         return DB::transaction(function () use ($request) {
 
             $tanggal = now()->toDateString();
@@ -50,7 +54,11 @@ class AntrianCOntroller extends Controller
                 ->where('id', $request->jenis_antrian_id)
                 ->first();
 
-            return view('ambil.sukses', compact('nomor', 'jenis'));
+            return response()->json([
+                'success' => true,
+                'nomor'   => $jenis->prefix . str_pad($nomor, 3, '0', STR_PAD_LEFT),
+                'jenis'   => $jenis->nama
+            ]);
         });
     }
 
