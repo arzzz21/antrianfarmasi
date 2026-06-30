@@ -10,14 +10,14 @@ class LoketMasterController extends Controller
 {
     public function index()
     {
-        $lokets = DB::table('simrspku_antrians.lokets')->get();
+        $lokets = DB::table('simrspku_antrian.lokets')->get();
 
-        $jenisAntrians = DB::table('simrspku_antrians.jenis_antrians')
+        $jenisAntrians = DB::table('simrspku_antrian.jenis_antrians')
             ->where('aktif', 1)
             ->get();
 
         // ambil relasi loket ↔ jenis
-        $relasi = DB::table('simrspku_antrians.loket_jenis_antrian')
+        $relasi = DB::table('simrspku_antrian.loket_jenis_antrian')
             ->get()
             ->groupBy('loket_id');
 
@@ -32,14 +32,14 @@ class LoketMasterController extends Controller
     {
         DB::transaction(function () use ($r) {
 
-            $loketId = DB::table('simrspku_antrians.lokets')->insertGetId([
+            $loketId = DB::table('simrspku_antrian.lokets')->insertGetId([
                 'nama_loket' => $r->nama_loket,
                 'aktif' => 1
             ]);
 
             if ($r->filled('jenis_antrian_ids')) {
                 foreach ($r->jenis_antrian_ids as $jenisId) {
-                    DB::table('simrspku_antrians.loket_jenis_antrian')->insert([
+                    DB::table('simrspku_antrian.loket_jenis_antrian')->insert([
                         'loket_id' => $loketId,
                         'jenis_antrian_id' => $jenisId
                     ]);
@@ -56,7 +56,7 @@ class LoketMasterController extends Controller
 
         try {
             // 1. Update nama loket
-            DB::table('simrspku_antrians.lokets')
+            DB::table('simrspku_antrian.lokets')
                 ->where('id', $id)
                 ->update([
                     'nama_loket' => $r->nama_loket,
@@ -64,14 +64,14 @@ class LoketMasterController extends Controller
                 ]);
 
             // 2. Hapus relasi lama
-            DB::table('simrspku_antrians.loket_jenis_antrian')
+            DB::table('simrspku_antrian.loket_jenis_antrian')
                 ->where('loket_id', $id)
                 ->delete();
 
             // 3. Insert relasi baru (jika ada)
             if ($r->filled('jenis_antrian_ids')) {
                 foreach ($r->jenis_antrian_ids as $jenisId) {
-                    DB::table('simrspku_antrians.loket_jenis_antrian')->insert([
+                    DB::table('simrspku_antrian.loket_jenis_antrian')->insert([
                         'loket_id' => $id,
                         'jenis_antrian_id' => $jenisId
                     ]);
@@ -89,7 +89,7 @@ class LoketMasterController extends Controller
 
     public function toggle($id)
     {
-        DB::table('simrspku_antrians.lokets')
+        DB::table('simrspku_antrian.lokets')
             ->where('id', $id)
             ->update(['aktif' => DB::raw('IF(aktif=1,0,1)')]);
         return back();

@@ -16,10 +16,10 @@ class DisplayController extends Controller
     // 🔔 Ambil 1 antrian yang siap dipanggil
     public function data()
     {
-        $log = DB::table('simrspku_antrians.antrian_logs as l')
-            ->join('simrspku_antrians.antrians as a', 'l.antrian_id', '=', 'a.id')
-            ->join('simrspku_antrians.jenis_antrians as j', 'a.jenis_antrian_id', '=', 'j.id')
-            ->join('simrspku_antrians.lokets as k', 'l.loket_id', '=', 'k.id')
+        $log = DB::table('simrspku_antrian.antrian_logs as l')
+            ->join('simrspku_antrian.antrians as a', 'l.antrian_id', '=', 'a.id')
+            ->join('simrspku_antrian.jenis_antrians as j', 'a.jenis_antrian_id', '=', 'j.id')
+            ->join('simrspku_antrian.lokets as k', 'l.loket_id', '=', 'k.id')
             ->where('l.status', 1)
             ->orderBy('l.created_at')
             ->first([
@@ -31,10 +31,10 @@ class DisplayController extends Controller
             ]);
 
         // antrian yang sudah dipanggil (terakhir 2)
-        $history = DB::table('simrspku_antrians.antrian_logs as l')
-            ->join('simrspku_antrians.antrians as a', 'l.antrian_id', '=', 'a.id')
-            ->join('simrspku_antrians.jenis_antrians as j', 'a.jenis_antrian_id', '=', 'j.id')
-            ->join('simrspku_antrians.lokets as k', 'l.loket_id', '=', 'k.id')
+        $history = DB::table('simrspku_antrian.antrian_logs as l')
+            ->join('simrspku_antrian.antrians as a', 'l.antrian_id', '=', 'a.id')
+            ->join('simrspku_antrian.jenis_antrians as j', 'a.jenis_antrian_id', '=', 'j.id')
+            ->join('simrspku_antrian.lokets as k', 'l.loket_id', '=', 'k.id')
             ->where('l.status', 2)
             ->orderByDesc('l.updated_at')
             ->limit(2)
@@ -52,7 +52,7 @@ class DisplayController extends Controller
 
     public function tampil($logId)
     {
-        DB::table('simrspku_antrians.antrian_logs')
+        DB::table('simrspku_antrian.antrian_logs')
             ->where('id', $logId)
             ->where('status', 1)
             ->update([

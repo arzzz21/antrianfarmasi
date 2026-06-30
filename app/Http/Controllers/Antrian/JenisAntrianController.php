@@ -10,13 +10,13 @@ class JenisAntrianController extends Controller
 {
     public function index()
     {
-        $data = DB::table('simrspku_antrians.jenis_antrians')->get();
+        $data = DB::table('simrspku_antrian.jenis_antrians')->get();
         return view('jenis.index', compact('data'));
     }
 
     public function store(Request $r)
     {
-        DB::table('simrspku_antrians.jenis_antrians')->insert([
+        DB::table('simrspku_antrian.jenis_antrians')->insert([
             'nama' => $r->nama,
             'kode' => strtoupper($r->kode),
             'prefix' => strtoupper($r->prefix),
@@ -30,7 +30,7 @@ class JenisAntrianController extends Controller
 
     public function toggle($id)
     {
-        DB::table('simrspku_antrians.jenis_antrians')
+        DB::table('simrspku_antrian.jenis_antrians')
             ->where('id', $id)
             ->update([
                 'aktif' => DB::raw('IF(aktif=1,0,1)'),

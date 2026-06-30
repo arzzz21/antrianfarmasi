@@ -10,15 +10,15 @@ class AntrianCOntroller extends Controller
 {
     public function index()
     {
-        $jenis = DB::table('simrspku_antrians.jenis_antrians')->get();
-        $loket = DB::table('simrspku_antrians.lokets')->get();
+        $jenis = DB::table('simrspku_antrian.jenis_antrians')->get();
+        $loket = DB::table('simrspku_antrian.lokets')->get();
 
         return view('antrian.index', compact('jenis',  'loket'));
     }
 
     public function ambil()
     {
-        $jenis = DB::table('simrspku_antrians.jenis_antrians')
+        $jenis = DB::table('simrspku_antrian.jenis_antrians')
             ->where('aktif', 1)
             ->get();
 
@@ -28,14 +28,14 @@ class AntrianCOntroller extends Controller
     public function ambilAjax(Request $request)
     {
         $request->validate([
-            'jenis_antrian_id' => 'required|exists:db_custom.simrspku_antrians.jenis_antrians,id'
+            'jenis_antrian_id' => 'required|exists:db_custom.simrspku_antrian.jenis_antrians,id'
         ]);
 
         return DB::transaction(function () use ($request) {
 
             $tanggal = now()->toDateString();
 
-            $last = DB::table('simrspku_antrians.antrians')
+            $last = DB::table('simrspku_antrian.antrians')
                 ->where('tanggal', $tanggal)
                 ->where('jenis_antrian_id', $request->jenis_antrian_id)
                 ->lockForUpdate()
@@ -43,14 +43,14 @@ class AntrianCOntroller extends Controller
 
             $nomor = ($last ?? 0) + 1;
 
-            DB::table('simrspku_antrians.antrians')->insert([
+            DB::table('simrspku_antrian.antrians')->insert([
                 'tanggal' => $tanggal,
                 'nomor_antrian' => $nomor,
                 'jenis_antrian_id' => $request->jenis_antrian_id,
                 'created_at' => now()
             ]);
 
-            $jenis = DB::table('simrspku_antrians.jenis_antrians')
+            $jenis = DB::table('simrspku_antrian.jenis_antrians')
                 ->where('id', $request->jenis_antrian_id)
                 ->first();
 

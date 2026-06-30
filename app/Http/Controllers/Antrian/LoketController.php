@@ -10,7 +10,7 @@ class LoketController extends Controller
 {
     public function index(Request $r)
     {
-        $lokets = DB::table('simrspku_antrians.lokets')
+        $lokets = DB::table('simrspku_antrian.lokets')
             ->where('aktif', 1)
             ->get();
 
@@ -19,17 +19,17 @@ class LoketController extends Controller
         if ($r->loket_id) {
             $loketId = $r->loket_id;
 
-            $antrians = DB::table('simrspku_antrians.antrians as a')
-                ->join('simrspku_antrians.jenis_antrians as j', 'j.id', '=', 'a.jenis_antrian_id')
-                ->join('simrspku_antrians.loket_jenis_antrian as lja', function ($join) use ($loketId) {
+            $antrians = DB::table('simrspku_antrian.antrians as a')
+                ->join('simrspku_antrian.jenis_antrians as j', 'j.id', '=', 'a.jenis_antrian_id')
+                ->join('simrspku_antrian.loket_jenis_antrian as lja', function ($join) use ($loketId) {
                     $join->on('lja.jenis_antrian_id', '=', 'a.jenis_antrian_id')
                         ->where('lja.loket_id', $loketId);
                 })
-                ->leftJoin('simrspku_antrians.antrian_logs as l', function ($join) {
+                ->leftJoin('simrspku_antrian.antrian_logs as l', function ($join) {
                     $join->on('l.antrian_id', '=', 'a.id')
                         ->whereRaw('l.id = (
                             SELECT MAX(id)
-                            FROM simrspku_antrians.antrian_logs
+                            FROM simrspku_antrian.antrian_logs
                             WHERE antrian_id = a.id
                         )');
                 })
@@ -50,7 +50,7 @@ class LoketController extends Controller
 
     public function panggil(Request $r, $loketId)
     {
-        $last = DB::table('simrspku_antrians.antrian_logs')
+        $last = DB::table('simrspku_antrian.antrian_logs')
             ->where('antrian_id', $r->antrian_id)
             ->orderByDesc('id')
             ->first();
@@ -60,7 +60,7 @@ class LoketController extends Controller
             return back()->with('error', 'Antrian masih dipanggil');
         }
 
-        DB::table('simrspku_antrians.antrian_logs')->insert([
+        DB::table('simrspku_antrian.antrian_logs')->insert([
             'antrian_id' => $r->antrian_id,
             'loket_id'   => $loketId,
             'status'     => 1
@@ -77,17 +77,17 @@ class LoketController extends Controller
 
         $loketId = $r->loket_id;
 
-        $antrians = DB::table('simrspku_antrians.antrians as a')
-            ->join('simrspku_antrians.jenis_antrians as j', 'j.id', '=', 'a.jenis_antrian_id')
-            ->join('simrspku_antrians.loket_jenis_antrian as lja', function ($join) use ($loketId) {
+        $antrians = DB::table('simrspku_antrian.antrians as a')
+            ->join('simrspku_antrian.jenis_antrians as j', 'j.id', '=', 'a.jenis_antrian_id')
+            ->join('simrspku_antrian.loket_jenis_antrian as lja', function ($join) use ($loketId) {
                 $join->on('lja.jenis_antrian_id', '=', 'a.jenis_antrian_id')
                     ->where('lja.loket_id', $loketId);
             })
-            ->leftJoin('simrspku_antrians.antrian_logs as l', function ($join) {
+            ->leftJoin('simrspku_antrian.antrian_logs as l', function ($join) {
                 $join->on('l.antrian_id', '=', 'a.id')
                     ->whereRaw('l.id = (
                         SELECT MAX(id)
-                        FROM simrspku_antrians.antrian_logs
+                        FROM simrspku_antrian.antrian_logs
                         WHERE antrian_id = a.id
                     )');
             })
